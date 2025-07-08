@@ -1,3 +1,5 @@
+SET NAMES utf8mb4;
+
 -- ✅ 데이터베이스 생성 및 선택
 CREATE DATABASE IF NOT EXISTS oz_db DEFAULT CHARACTER SET utf8mb4 DEFAULT COLLATE utf8mb4_general_ci;
 USE oz_db;
