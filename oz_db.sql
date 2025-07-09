@@ -685,7 +685,7 @@ INSERT INTO product (
   '불가사리형 인형 키링',
   7300,
   '작고 귀여운 커스텀 인형 키링',
-  '/images/starfish-doll-keyring.png',
+  '/images/starfish-doll-keyring.png',category_large
   1,
   1,
   NULL,

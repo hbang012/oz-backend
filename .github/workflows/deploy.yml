@@ -16,7 +16,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 호스트 키 등록.
+      # 호스트 키 등록
       - name: Add EC2 Host to known_hosts
         run: |
           mkdir -p ~/.ssh
@@ -37,21 +37,21 @@ jobs:
           echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
           echo "COOKIE_SECRET=${{ secrets.COOKIE_SECRET }}" >> .env
 
-      # 깃헙 소스 코드를 EC2/ubuntu/backend 경로로 복사, /backend는 변경 가능하며 서비스마다 달라야
+      # EC2_USER 값인 /ubuntu/backend 경로로 소스코드 복사, /backend는 변경 가능
       - name: Upload source code to EC2
         run: |
-          rsync -avz --exclude node_modules --exclude .git ./ ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/ubuntu/oz-backend
+          rsync -avz --exclude node_modules --exclude .git ./ ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/ubuntu/oz_backend
 
       # .env파일 EC2 업로드
       - name: Upload .env to EC2
         run: |
-          scp .env ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/ubuntu/oz-backend/.env
+          scp .env ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/ubuntu/oz_backend/.env
 
       # EC2에 ssh 원격접속하여 기존 도커컨테이너 삭제후 도커이미지 빌드, 컨테이너 실행
       - name: Deploy on EC2
         run: |
           ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-            cd /home/ubuntu/oz-backend
+            cd /home/ubuntu/oz_backend
             sudo docker-compose -f docker-compose.prod.yml down
             sudo docker-compose -f docker-compose.prod.yml up -d --build
           EOF
