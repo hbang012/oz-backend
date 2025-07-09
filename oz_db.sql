@@ -210,27 +210,27 @@ INSERT INTO gnb_menu (id, label, href, parent_id, depth, sort_order) VALUES
 -- SELECT * FROM gnb_menu ORDER BY sort_order ASC; -- 
 
 
--- ✅ 대분류 테이블
+-- 대분류 테이블
 CREATE TABLE category_large (
     large_category_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL
 );
 
--- ✅ 중분류 테이블 (대분류 참조)
+-- 중분류 테이블 (대분류 참조)
 CREATE TABLE category_medium (
     category_medium_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     large_category_id INT NOT NULL
 );
 
--- ✅ 소분류 테이블 (중분류 참조)
+-- 소분류 테이블 (중분류 참조)
 CREATE TABLE category_small (
     category_small_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     category_medium_id INT NOT NULL
 );
 
--- 중복 덮어씌우고 등록
+-- 대분류 등록
 INSERT INTO category_large (large_category_id, name) VALUES
 (197, '인형/패브릭'),
 (2, '문구'),
@@ -243,7 +243,7 @@ INSERT INTO category_large (large_category_id, name) VALUES
 
 -- SELECT * FROM category_large;
 
--- 중복 덮어씌우고 등록
+-- 중분류 등록
 INSERT INTO category_medium (category_medium_id, name, large_category_id) VALUES
 (198, '인형', 197),
 (199, '쿠션&방석', 197),
@@ -315,7 +315,7 @@ INSERT INTO category_medium (category_medium_id, name, large_category_id) VALUES
 
 -- SELECT * FROM category_medium;
 
--- 중복 덮어씌우고 등록
+-- 소분류 등록
 INSERT INTO category_small (category_small_id, name, category_medium_id) VALUES
 -- 스티커 (3)
 (19, '리무버블지', 3),
@@ -429,21 +429,21 @@ INSERT INTO category_small (category_small_id, name, category_medium_id) VALUES
 
 -- SELECT * FROM category_small;
 
--- ✅ 배송 방법 테이블
+-- 배송 방법 테이블
 CREATE TABLE delivery_method (
     delivery_method_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL
 );
 INSERT INTO delivery_method (delivery_method_id, name) VALUES (1, '택배');
 
--- ✅ 포장 방법 테이블
+-- 포장 방법 테이블
 CREATE TABLE packaging_type (
     packaging_type_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL
 );
 INSERT INTO packaging_type (packaging_type_id, name) VALUES (1, '개별포장');
 
--- ✅ 별도문의 문구 테이블
+-- 별도문의 문구 테이블
 CREATE TABLE custom_note (
     custom_note_id INT AUTO_INCREMENT PRIMARY KEY,
     content TEXT NOT NULL
@@ -451,7 +451,7 @@ CREATE TABLE custom_note (
 INSERT INTO custom_note (custom_note_id, content)
 VALUES (1, '※ 커스텀 제품은 제작 전 상담이 필요합니다.');
 
--- ✅ 제품 테이블 (분류, 배송, 문구 참조)
+-- 제품 테이블 (분류, 배송, 문구 참조)
 CREATE TABLE product (
     product_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(200) NOT NULL,
@@ -472,14 +472,14 @@ CREATE TABLE product (
 );
 
 -- 상세페이지 이미지 추가
--- ALTER TABLE product
---   ADD COLUMN sub_image_urls JSON NULL AFTER image_url;
+ALTER TABLE product
+  ADD COLUMN sub_image_urls JSON NULL AFTER image_url;
   
 -- 인기순 추가
--- ALTER TABLE product
---   ADD COLUMN like_count INT NOT NULL DEFAULT 0;
+ALTER TABLE product
+  ADD COLUMN like_count INT NOT NULL DEFAULT 0;
 
--- DESCRIBE product;
+ DESCRIBE product;
 
 
 -- 옵션 그룹 테이블 (ex. 사이즈, 두께 등)
@@ -654,7 +654,7 @@ INSERT INTO product_price_tier (product_id, min_quantity, unit_price, production
   (3267, 1, 561, '5~10일'),
   (3267, 51, 561, '7~12일');
 
--- SELECT * FROM product_price_tier;
+SELECT * FROM product_price_tier;
 
 -- SELECT 
 --   p.product_id,
@@ -693,10 +693,10 @@ INSERT INTO product (
   1007,
   197,
   200,
-  301
+  28
 );
 
--- SELECT * FROM product ORDER BY created_at DESC;
+SELECT * FROM product ORDER BY created_at DESC;
 
 
 -- 상세 설명 세분화 테이블
@@ -762,22 +762,22 @@ JOIN category_medium cm ON cs.medium_category_id = cm.id
 JOIN category_large cl ON cm.large_category_id = cl.id;
 
 
-SELECT 
-  p.product_id,
-  p.name AS product_name,
-  cl.name AS large,
-  cm.name AS medium,
-  cs.name AS small,
-  pp.quantity_range,
-  pp.unit_price
-FROM product p
-JOIN category_large cl ON p.category_large_id = cl.large_category_id
-JOIN category_medium cm ON p.category_medium_id = cm.category_medium_id
-JOIN category_small cs ON p.category_small_id = cs.category_small_id
-JOIN product_pricing pp ON p.product_pricing_id = pp.product_pricing_id
-ORDER BY p.product_id;
+-- SELECT 
+--   p.product_id,
+--   p.name AS product_name,
+--   cl.name AS large,
+--   cm.name AS medium,
+--   cs.name AS small,
+--   pp.quantity_range,
+--   pp.unit_price
+-- FROM product p
+-- JOIN category_large cl ON p.category_large_id = cl.large_category_id
+-- JOIN category_medium cm ON p.category_medium_id = cm.category_medium_id
+-- JOIN category_small cs ON p.category_small_id = cs.category_small_id
+-- JOIN product_pricing pp ON p.product_pricing_id = pp.product_pricing_id
+-- ORDER BY p.product_id;
 
-SELECT product_id, category_medium_id, category_small_id;
+-- SELECT product_id, category_medium_id, category_small_id;
 
 -- SELECT *
 -- FROM product_pricing
@@ -796,8 +796,6 @@ SELECT product_id, category_medium_id, category_small_id;
 -- LEFT JOIN category_medium cm    ON p.category_medium_id   = cm.category_medium_id
 -- LEFT JOIN category_small cs     ON p.category_small_id    = cs.category_small_id
 -- WHERE p.product_id IN (4343,4344,4345,4346,4347,4348);
-
-
 
 
 --  blog_posts 테이블 생성
@@ -833,6 +831,19 @@ INSERT INTO blog_posts (title, description, thumbnail_url, created_at) VALUES
 -- SELECT * FROM blog_posts ORDER BY created_at DESC;
 
 
-
-
+SELECT
+  p.*,
+  cl.name AS category_large_name,
+  cm.name AS category_medium_name,
+  cs.name AS category_small_name,
+  pp.quantity_range,
+  pp.unit_price,
+  pp.supply_price,
+  pp.production_time
+FROM product p
+JOIN category_large cl ON p.category_large_id = cl.large_category_id
+JOIN category_medium cm ON p.category_medium_id = cm.category_medium_id
+JOIN category_small cs ON p.category_small_id = cs.category_small_id
+JOIN product_pricing pp ON p.product_pricing_id = pp.product_pricing_id
+ORDER BY p.created_at DESC;
 
