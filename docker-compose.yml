@@ -32,7 +32,7 @@ services:
       TZ: Asia/Seoul
     # 초기 sql 스크립트 마운트하여 한번만 실행
     volumes:
-      - ./nodejs_db.sql:/docker-entrypoint-initdb.d/nodejs_db.sql
+      - ./oz_db.sql:/docker-entrypoint-initdb.d/oz_db.sql
     # 로컬 db가 3306이므로 로컬 3307을 통해 컨테이너 내부 3306으로 접속
     # 3307 : 컨테이너 내부 db 접속, 로컬에서 컨테이너 안에 있는 db번호, 바꿔야함
     # 새로 추가시 1나씩 올려줘야함

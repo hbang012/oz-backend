@@ -245,6 +245,7 @@ router.get('/product', (req, res) => {
       console.error('조회 실패:', err.message);
       return res.status(500).send('조회 실패');
     }
+    console.log('조회된 상품 수:', rows.length);
     res.json(rows);
   });
 });

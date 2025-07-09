@@ -9,7 +9,7 @@ const connection = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || '1234',
-  database: process.env.DB_NAME || 'nodejs_db',
+  database: process.env.DB_NAME || 'oz_db',
   // 커넥션 풀이 가득차면 추가요청을 쌓고 기다림
   waitForConnections: true,
   // 최대 연결 수
