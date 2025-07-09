@@ -184,7 +184,7 @@ router.get('/product', (req, res) => {
   const params = [];
 
   // 필터: category(중분류 or 소분류)
-  if (category) {
+  if (category && !isNaN(category)) {
     where =
       'WHERE p.category_large_id = ? OR p.category_medium_id = ? OR p.category_small_id = ?';
     params.push(category, category, category);
