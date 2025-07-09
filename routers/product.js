@@ -184,10 +184,18 @@ router.get('/product', (req, res) => {
   const params = [];
 
   // 필터: category(중분류 or 소분류)
-  if (category && !isNaN(category)) {
+  if (
+    category !== undefined &&
+    category !== null &&
+    category !== '' &&
+    !isNaN(category)
+  ) {
     where =
       'WHERE p.category_large_id = ? OR p.category_medium_id = ? OR p.category_small_id = ?';
     params.push(category, category, category);
+    console.log('category:', category);
+    console.log('최종 쿼리:', query);
+    console.log('params:', params);
   }
 
   // 정렬 조건
