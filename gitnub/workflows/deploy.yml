@@ -16,7 +16,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 호스트 키 등록
+      # 호스트 키 등록.
       - name: Add EC2 Host to known_hosts
         run: |
           mkdir -p ~/.ssh
