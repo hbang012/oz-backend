@@ -193,9 +193,6 @@ router.get('/product', (req, res) => {
     where =
       'WHERE p.category_large_id = ? OR p.category_medium_id = ? OR p.category_small_id = ?';
     params.push(category, category, category);
-    console.log('category:', category);
-    console.log('최종 쿼리:', query);
-    console.log('params:', params);
   }
 
   // 정렬 조건
