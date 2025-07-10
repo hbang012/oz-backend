@@ -178,19 +178,13 @@ router.put('/product/:id', (req, res) => {
 });
 
 router.get('/product', (req, res) => {
-  console.log('▶️ [DEBUG] /product called, query=', req.query);
   const { category, sort } = req.query;
   let orderBy = 'p.created_at DESC';
   let where = '';
   const params = [];
 
   // 필터: category(중분류 or 소분류)
-  if (
-    category !== undefined &&
-    category !== null &&
-    category !== '' &&
-    !isNaN(category)
-  ) {
+  if (category) {
     where =
       'WHERE p.category_large_id = ? OR p.category_medium_id = ? OR p.category_small_id = ?';
     params.push(category, category, category);
