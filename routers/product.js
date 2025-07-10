@@ -178,6 +178,7 @@ router.put('/product/:id', (req, res) => {
 });
 
 router.get('/product', (req, res) => {
+  console.log('▶️ [DEBUG] /product called, query=', req.query);
   const { category, sort } = req.query;
   let orderBy = 'p.created_at DESC';
   let where = '';
@@ -245,6 +246,8 @@ router.get('/product', (req, res) => {
     ORDER BY ${orderBy};
   `;
 
+  console.log('▶️ [DEBUG] SQL=', query.trim());
+  console.log('▶️ [DEBUG] PARAMS=', params);
   connection.query(query, params, (err, rows) => {
     if (err) {
       console.error('조회 실패:', err.message);
