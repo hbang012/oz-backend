@@ -34,7 +34,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // 라우터 설정 (불러오기)
-app.use('/product', productRouter);
+app.use(productRouter);
 app.use(productOptionRouter);
 app.use(productPricingRouter);
 app.use(gnbRouter);

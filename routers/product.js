@@ -3,7 +3,7 @@ const router = express.Router();
 const connection = require('../config/mysql');
 
 // GET /product/:id 특정 제품 상세
-router.get('/:id', (req, res) => {
+router.get('/product/:id', (req, res) => {
   const { id } = req.params;
 
   const query = `
@@ -39,7 +39,7 @@ router.get('/:id', (req, res) => {
 
 // POST 핸들러
 // POST /product - 제품 등록
-router.post('/', (req, res) => {
+router.post('/product', (req, res) => {
   const {
     name,
     period,
@@ -106,7 +106,7 @@ router.post('/', (req, res) => {
 });
 
 // 삭제
-router.delete('/:id', (req, res) => {
+router.delete('/product/:id', (req, res) => {
   const productId = req.params.id;
 
   const query = 'DELETE FROM product WHERE product_id = ?';
@@ -119,7 +119,7 @@ router.delete('/:id', (req, res) => {
 });
 
 // 수정
-router.put('/:id', (req, res) => {
+router.put('/product/:id', (req, res) => {
   const { id } = req.params;
   const {
     name,
@@ -177,7 +177,7 @@ router.put('/:id', (req, res) => {
   });
 });
 
-router.get('/', (req, res) => {
+router.get('/product', (req, res) => {
   const { category, sort } = req.query;
   let orderBy = 'p.created_at DESC';
   let where = '';
