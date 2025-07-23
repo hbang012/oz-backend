@@ -41,7 +41,7 @@ app.use(gnbRouter);
 app.use('/blog', blogRouter);
 app.use('/chat', chatbotRouter);
 
-// 에러처리 미들웨어
+// 에러처리 미들웨어.
 app.use((err, req, res, next) => {
   console.error(err);
   res.status(500).send(err.message);
