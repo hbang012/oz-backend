@@ -12,6 +12,7 @@ const productOptionRouter = require('./routers/productOption');
 const productPricingRouter = require('./routers/productPricing');
 const gnbRouter = require('./routers/gnb');
 const blogRouter = require('./routers/blog');
+const chatbotRouter = require('./routers/chatbot');
 
 //  dotenv 활성화
 dotenv.config();
@@ -33,11 +34,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // 라우터 설정 (불러오기)
-app.use(productRouter);
+app.use('/product', productRouter);
 app.use(productOptionRouter);
 app.use(productPricingRouter);
 app.use(gnbRouter);
 app.use('/blog', blogRouter);
+app.use('/chat', chatbotRouter);
 
 // 에러처리 미들웨어
 app.use((err, req, res, next) => {
